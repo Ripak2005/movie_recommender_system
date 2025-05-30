@@ -7,6 +7,24 @@ import requests
 from requests.adapters import HTTPAdapter
 from requests.packages.urllib3.util.retry import Retry
 
+import os
+import gdown
+
+# File names and their Google Drive file IDs
+files_to_download = {
+    "movie_dict.pkl": "1hqGOxRDwAnp3i7i8TwuGLNGYPLRIVXJm",
+    "movies.pkl": "1blDXd5kA1egho8GlEnhFS-ES8-qccmN5",
+    "similarity.pkl": "1AXFzcCtAeFzigS4hfJj4858S_LqqvNMe",
+}
+
+# Download each file if it doesn't already exist
+for filename, file_id in files_to_download.items():
+    if not os.path.exists(filename):
+        url = f"https://drive.google.com/uc?id={file_id}"
+        print(f"Downloading {filename}...")
+        gdown.download(url, filename, quiet=False)
+
+
 def fetch_poster(movie_id):
     session = requests.Session()
     retry = Retry(connect=3, backoff_factor=1)
